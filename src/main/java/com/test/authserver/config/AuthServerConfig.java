@@ -32,8 +32,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Qualifier("mysqlDataSource")
     DataSource dataSource;
 
+
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
         oauthServer
                 .tokenKeyAccess("permitAll()")
                 .checkTokenAccess("permitAll()")
@@ -68,7 +69,6 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     }
 
     @Bean
-    @Primary
     public DefaultTokenServices tokenServices() {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setSupportRefreshToken(true);
