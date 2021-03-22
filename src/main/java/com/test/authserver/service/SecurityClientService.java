@@ -1,4 +1,4 @@
-package com.test.authserver.service;//package com.qsystem.authserver.service;
+package com.test.authserver.service;
 
 import com.test.authserver.model.SecurityClient;
 import com.test.authserver.repo.AuthClientRepo;
