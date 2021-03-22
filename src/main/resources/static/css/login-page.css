@@ -1,0 +1,66 @@
+input {
+    width: calc(100% - 22px);
+    margin: 5px 0;
+    padding:10px;
+}
+
+.main-container {
+    background: linear-gradient(45deg, #f2f2fc, #98A2ED, #708FE0),
+                url(/img/triangle_pattern.png) repeat;
+    background-blend-mode: overlay;
+    height: 100vh;
+}
+
+.width-80-a {
+    width: 80%;
+    margin: auto;
+}
+.width-45{
+    width: 45%;
+}
+.card-width {
+    max-width: 500px;
+    min-width: 300px;
+    width: 30%;
+    margin: auto;
+}
+
+.title-font {
+    color: #000000;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: start;
+    margin: 20px auto 15px auto;
+}
+
+.user-info {
+    padding: 10px 5px;
+    /*background: rgba(237, 192, 175, .7);*/
+    /*border-radius: 5px;*/
+}
+
+.input-wrapper {
+    background: #FFFFFF;
+    border: 1.5px solid transparent;
+    box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.3);
+    transition: border-top-color .5s,
+                border-right-color 1s,
+                border-bottom-color 1.5s,
+                border-left-color 2s;
+}
+.input-wrapper:hover {
+    background: #FFFFFF;
+    border: 1.5px solid #331E9E;
+    transition: border-top-color .5s,
+                border-right-color 1s,
+                border-bottom-color 1.5s,
+                border-left-color 2s;
+}
+.input-wrapper:focus {
+    background: #FFFFFF;
+    border: 1.5px solid #d51973;
+    transition: border-top-color .5s,
+                border-right-color 1s,
+                border-bottom-color 1.5s,
+                border-left-color 2s;
+}

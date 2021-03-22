@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Вход в систему</title>
+    <link rel="stylesheet" type="text/css" data-th-href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" data-th-href="@{/css/styles.css}">
+    <link rel="stylesheet" type="text/css" data-th-href="@{/css/login-page.css}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <script type="text/javascript" data-th-src="@{/js/login-page.js}"></script>
+</head>
+<body>
+<div class="main-container flex-container justify-center">
+    <div class="flex-container self-align-center card card-width">
+        <div class="width-80-a">
+            <form name="login-form"
+                  method="post"
+                  data-th-action="@{/login}">
+
+                <div class="title-font"
+                     data-th-text="#{title}"></div>
+
+                <div class="user-info">
+                    <div data-th-if="${param.error}"
+                         data-th-text="#{message.login.error}"></div>
+                    <div data-th-if="${param.logout}"
+                         data-th-text="#{message.logout.success}"></div>
+                </div>
+
+                <label for="username">
+                    <input id="username" name="username"
+                           class="input-wrapper"
+                           type="text"
+                           data-th-placeholder="#{input.placeholder.login}">
+                </label>
+
+                <label for="password">
+                    <input id="password" name="password"
+                           class="input-wrapper"
+                           type="password"
+                           data-th-placeholder="#{input.placeholder.password}">
+                </label>
+
+                <div class="width-45" style="float: right">
+                    <button class="gradient-button"
+                            type="submit"
+                            data-th-text="#{button.text}">Войти
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
