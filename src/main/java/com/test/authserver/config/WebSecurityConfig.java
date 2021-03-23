@@ -1,11 +1,13 @@
 package com.test.authserver.config;
 
+import com.test.authserver.provider.LoggingDaoAuthenticationProvider;
 import com.test.authserver.repo.AuthUserRepo;
 import com.test.authserver.service.SecurityUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -14,10 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
-// todo: нет обработки ошибок для oauht2, то есть при ошибки нас перенаправляет на /oauth/error, а она не реалзиована
 @Configuration
 @EnableWebSecurity(debug = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -53,10 +52,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth
-            .userDetailsService(userDetailsService())
+                .authenticationProvider(authenticationProvider())
+//            .userDetailsService(userDetailsService())
         ;
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        var cap = new LoggingDaoAuthenticationProvider();
+        cap.setUserDetailsService(userDetailsService());
+        cap.setPasswordEncoder(passwordEncoder());
+        return cap;
     }
 
     @Bean
