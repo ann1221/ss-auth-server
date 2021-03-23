@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Вход в систему</title>
+    <title data-th-text="#{title}"></title>
+    <link rel="shortcut icon" type="image/x-icon" data-th-href="@{/img/icons/key.ico}" >
     <link rel="stylesheet" type="text/css" data-th-href="@{/css/main.css}">
     <link rel="stylesheet" type="text/css" data-th-href="@{/css/styles.css}">
     <link rel="stylesheet" type="text/css" data-th-href="@{/css/login-page.css}">
@@ -19,7 +20,7 @@
                   data-th-action="@{/login}">
 
                 <div class="title-font"
-                     data-th-text="#{title}"></div>
+                     data-th-text="#{paragraph}"></div>
 
                 <div class="user-info">
                     <div data-th-if="${param.error}"
