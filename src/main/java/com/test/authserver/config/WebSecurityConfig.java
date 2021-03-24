@@ -1,13 +1,11 @@
 package com.test.authserver.config;
 
-import com.test.authserver.provider.LoggingDaoAuthenticationProvider;
 import com.test.authserver.repo.AuthUserRepo;
 import com.test.authserver.service.SecurityUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -52,19 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .authenticationProvider(authenticationProvider())
-//            .userDetailsService(userDetailsService())
+            .userDetailsService(userDetailsService())
+            .passwordEncoder(passwordEncoder())
         ;
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        var cap = new LoggingDaoAuthenticationProvider();
-        cap.setUserDetailsService(userDetailsService());
-        cap.setPasswordEncoder(passwordEncoder());
-        return cap;
     }
 
     @Bean

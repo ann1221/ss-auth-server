@@ -2,6 +2,7 @@ package com.test.authserver.config.inits;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -22,5 +23,6 @@ public class WebAppInitializer implements WebApplicationInitializer {
         registration.addMapping("/*");
 
         servletContext.addListener(new ContextLoaderListener(rootAppContext));
+        servletContext.addListener(new RequestContextListener()); // необходимо для получения в любом месте HttpServletRequest
     }
 }
