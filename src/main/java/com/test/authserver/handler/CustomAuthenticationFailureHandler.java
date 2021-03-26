@@ -1,11 +1,6 @@
 package com.test.authserver.handler;
 
-import com.test.authserver.model.SecurityUser;
-import com.test.authserver.service.LoginAttemptService;
 import com.test.authserver.service.SecurityUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -23,6 +18,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
+
         super.onAuthenticationFailure(request, response, exception);
         if (exception.getMessage().equalsIgnoreCase(SecurityUserService.IP_BLOCKED)) {
             request.getSession()

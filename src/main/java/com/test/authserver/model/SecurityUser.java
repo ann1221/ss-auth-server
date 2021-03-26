@@ -1,12 +1,14 @@
 package com.test.authserver.model;
 
 import com.test.authserver.model.entity.AuthUser;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 public class SecurityUser implements UserDetails {
+    @Getter
     private final AuthUser authUser;
 
     public SecurityUser(AuthUser authUser) {

@@ -22,7 +22,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
         // dispatcher.setAsyncSupported(true);
         registration.addMapping("/*");
 
-        servletContext.addListener(new ContextLoaderListener(rootAppContext));
+        servletContext.addListener(new ContextLoaderListener(rootAppContext)); // вроде нужно для работы spring-security
         servletContext.addListener(new RequestContextListener()); // необходимо для получения в любом месте HttpServletRequest
     }
 }

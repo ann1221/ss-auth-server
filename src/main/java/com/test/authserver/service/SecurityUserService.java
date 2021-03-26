@@ -24,24 +24,24 @@ public class SecurityUserService implements UserDetailsManager {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        if (ATTEMPT_CACHE.isBlocked(getUserRemoteAddr())) {
-            throw new RuntimeException(IP_BLOCKED);
-        }
+//        if (ATTEMPT_CACHE.isBlocked(getUserRemoteAddr())) {
+//            throw new RuntimeException(IP_BLOCKED);
+//        }
         return authUserRepo.findFirstByLogin(login)
                 .map(SecurityUser::new)
                 .orElseThrow(() -> new UsernameNotFoundException("i can't find your user, baby"));
     }
 
-    private String getUserRemoteAddr() {
-        HttpServletRequest request =
-                ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                        .getRequest();
-        String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader == null){
-            return request.getRemoteAddr();
-        }
-        return xfHeader.split(",")[0];
-    }
+//    private String getUserRemoteAddr() {
+//        HttpServletRequest request =
+//                ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+//                        .getRequest();
+//        String xfHeader = request.getHeader("X-Forwarded-For");
+//        if (xfHeader == null){
+//            return request.getRemoteAddr();
+//        }
+//        return xfHeader.split(",")[0];
+//    }
 
     @Override
     public boolean userExists(String login) {

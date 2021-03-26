@@ -24,26 +24,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 public class WebMvcConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
 
-    @Bean("messageSource")
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasenames("/static/lang/login-page");
-        messageSource.setDefaultEncoding("windows-1251");
-        return messageSource;
-    }
-
-    @Bean
-    public LocaleResolver localeResolver() {
-        return new CookieLocaleResolver();
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-        localeChangeInterceptor.setParamName("lang");
-        registry.addInterceptor(localeChangeInterceptor);
-    }
-
     @Autowired
     public WebMvcConfig(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
@@ -93,5 +73,25 @@ public class WebMvcConfig implements WebMvcConfigurer {
         templateResolver.setCacheable(false);
         templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
+    }
+
+    @Bean("messageSource")
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasenames("/static/lang/login-page");
+        messageSource.setDefaultEncoding("windows-1251");
+        return messageSource;
+    }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        return new CookieLocaleResolver();
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang");
+        registry.addInterceptor(localeChangeInterceptor);
     }
 }
