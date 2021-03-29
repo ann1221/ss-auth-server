@@ -1,6 +1,8 @@
 package com.test.authserver.model.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -42,6 +44,14 @@ public class AuthUser implements Serializable {
             joinColumns = @JoinColumn(name = "auser_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
+
+    @ManyToMany
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinTable(name="auser_authority",
+            joinColumns = @JoinColumn(name = "auser_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Authority> authorities;
 
     public Boolean isAccountNonLocked() {
         if (lockUntil == null) return true;

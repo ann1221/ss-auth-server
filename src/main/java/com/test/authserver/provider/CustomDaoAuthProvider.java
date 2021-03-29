@@ -1,6 +1,5 @@
 package com.test.authserver.provider;
 
-import com.test.authserver.repo.AuthUserRepo;
 import com.test.authserver.service.LoginAttemptService;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;

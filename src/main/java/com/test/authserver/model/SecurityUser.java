@@ -1,11 +1,15 @@
 package com.test.authserver.model;
 
 import com.test.authserver.model.entity.AuthUser;
+import com.test.authserver.model.entity.Authority;
+import com.test.authserver.model.entity.Role;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class SecurityUser implements UserDetails {
     @Getter
@@ -25,9 +29,22 @@ public class SecurityUser implements UserDetails {
         return authUser.getPassword();
     }
 
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return authUser.getRoles();
+//    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authUser.getRoles();
+        List<Authority> userRolesAuthorities = authUser.getRoles().stream()
+                .map(Role::getAuthorities)
+                .reduce((authorities, authorities2) -> {
+                    authorities.addAll(authorities2);
+                    return authorities;
+                }).orElse(new ArrayList<>());
+        List<Authority> userAuthorities = authUser.getAuthorities();
+        userAuthorities.addAll(userRolesAuthorities);
+        return userAuthorities;
     }
 
     @Override
