@@ -1,6 +1,6 @@
 package com.test.authserver.model;
 
-import com.test.authserver.model.entity.AuthClient;
+import com.test.authserver.model.entity.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
@@ -37,7 +37,7 @@ public class SecurityClient implements ClientDetails {
     @Override
     public Set<String> getResourceIds() {
         return authClient.getResources().stream()
-                .map(resource -> resource.getName())
+                .map(Resource::getName)
                 .collect(Collectors.toSet());
     }
 
@@ -49,21 +49,21 @@ public class SecurityClient implements ClientDetails {
     @Override
     public Set<String> getScope() {
         return authClient.getScopes().stream()
-                .map(scope -> scope.getName())
+                .map(Scope::getName)
                 .collect(Collectors.toSet());
     }
 
     @Override
     public Set<String> getAuthorizedGrantTypes() {
         return authClient.getGrantTypes().stream()
-                .map(grant -> grant.getName())
+                .map(GrantType::getName)
                 .collect(Collectors.toSet());
     }
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
         return authClient.getRedirectUris().stream()
-                .map(redirect -> redirect.getName())
+                .map(RedirectUri::getName)
                 .collect(Collectors.toSet());
     }
 
