@@ -1,13 +1,13 @@
 package com.test.authserver.config;
 
-import com.test.authserver.provider.CustomDaoAuthProvider;
+import com.test.authserver.filter.IpCheckerFilter;
 import com.test.authserver.repo.AuthUserRepo;
+import com.test.authserver.service.AuthServerLogService;
 import com.test.authserver.service.SecurityUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -16,12 +16,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
 @EnableWebSecurity(debug = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     AuthUserRepo authUserRepo;
+    @Autowired
+    AuthServerLogService authServerLogService;
 
     @Override
     @Bean
@@ -33,14 +38,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .mvcMatchers("/oauth/**", "/error**").permitAll()
+                .mvcMatchers("/oauth/**", "/error**", "/public/**").permitAll()
                 .anyRequest().authenticated()
             .and()
                 .formLogin()
                     .loginPage("/login")
                 .permitAll()
         ;
+        setFilters(http);
+    }
 
+    protected void setFilters(HttpSecurity http) {
+        http.addFilterBefore(ipCheckerFilter(), CsrfFilter.class);
     }
 
     @Override
@@ -54,18 +63,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-            .authenticationProvider(authenticationProvider())
-//            .userDetailsService(userDetailsService())
-//            .passwordEncoder(passwordEncoder())
+            .userDetailsService(userDetailsService())
+            .passwordEncoder(passwordEncoder())
         ;
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        var cap = new CustomDaoAuthProvider();
-        cap.setUserDetailsService(userDetailsService());
-        cap.setPasswordEncoder(passwordEncoder());
-        return cap;
+    public OncePerRequestFilter ipCheckerFilter() {
+        return new IpCheckerFilter(authServerLogService);
     }
 
     @Bean

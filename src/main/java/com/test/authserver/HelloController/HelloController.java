@@ -24,4 +24,10 @@ public class HelloController {
     public Object getSession(SessionStatus sessionStatus) {
         return sessionStatus;
     }
+
+
+    @GetMapping("public/hello")
+    public String getPublicHello(SessionStatus sessionStatus) {
+        return "Very Public Hello from Auth Server!";
+    }
 }

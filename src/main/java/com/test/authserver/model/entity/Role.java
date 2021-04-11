@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "role")
@@ -20,16 +21,25 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="name")
+    @Column(name="name", nullable = false)
     private String name;
 
-    @ManyToMany
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinTable(name="role_authority",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+//    @ManyToMany
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @JoinTable(name="role_authority",
+//            joinColumns = @JoinColumn(name = "role_id"),
+//            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List<Authority> authorities;
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "role_authority",
+            joinColumns = { @JoinColumn(name = "role_id") },
+            inverseJoinColumns = { @JoinColumn(name = "authority_id") }
+    )
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Authority> authorities;
+    private Set<Authority> authorities;
 
     @Override
     @Transient

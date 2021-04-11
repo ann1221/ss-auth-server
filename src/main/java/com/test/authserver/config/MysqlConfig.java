@@ -1,6 +1,7 @@
 package com.test.authserver.config;//package com.qsystem.authserver.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -28,9 +29,17 @@ import java.util.Properties;
 )
 @EnableTransactionManagement
 public class MysqlConfig {
+    @Value("${hibernate.dialect}")
+    private String dialect;
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String ddlOption;
+    @Value("${hibernate.show_sql}")
+    private String isShowSql;
+    @Value("${hibernate.time_zone}")
+    private String timezone;
 
     @Bean("mysqlDataSource")
-    @ConfigurationProperties(prefix = "spring.mysql.datasource")
+    @ConfigurationProperties(prefix = "mysql.datasource")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -39,7 +48,7 @@ public class MysqlConfig {
     public LocalContainerEntityManagerFactoryBean entityManager() {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setShowSql(true);
-        jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL8Dialect");
+        jpaVendorAdapter.setDatabasePlatform(dialect);
 //        vendorAdapter.setGenerateDdl(true);
         jpaVendorAdapter.setDatabase(Database.MYSQL);
 
@@ -48,16 +57,17 @@ public class MysqlConfig {
         factoryBean.setDataSource(dataSource());
         factoryBean.setPackagesToScan("com.test.authserver.model.entity");
         factoryBean.setPersistenceUnitName("mysql");
-
-        Properties props = new Properties();
-        props.put("hibernate.hbm2ddl.auto", "update");
-        props.put("hibernate.show_sql","false");
-        props.put("hibernate.jdbc.time_zone", "UTC");
-        factoryBean.setJpaProperties(props);
-
+        factoryBean.setJpaProperties(getHibernateProps());
         return factoryBean;
     }
 
+    private Properties getHibernateProps() {
+        Properties props = new Properties();
+        props.put("hibernate.hbm2ddl.auto", ddlOption);
+        props.put("hibernate.show_sql", isShowSql);
+        props.put("hibernate.jdbc.time_zone", timezone);
+        return props;
+    }
 
     @Bean(name = "mysqlTransactionManager")
     public PlatformTransactionManager transactionManager(@Qualifier("mysqlEntityManager") EntityManagerFactory emf) {

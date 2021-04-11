@@ -26,7 +26,6 @@ public class AuthenticationSuccessEventListener implements ApplicationListener<A
         WebAuthenticationDetails auth = (WebAuthenticationDetails) e.getAuthentication().getDetails();
 
         loginAttemptService.loginSucceed(auth.getRemoteAddress());
-        loginAttemptService.loginFailed(auth.getRemoteAddress());
         // todo: добавить auth-user
         logService.add(AuthServerLog.withLogName(LogName.USER_AUTHENTICATION_SUCCEED)
                 .level(Level.INFO)

@@ -13,6 +13,7 @@ public class OAuthAccessToken {
     @Column(name = "authentication_id")
     private String authenticationId;
 
+    // что это и зачем это надо
     @Column(name = "token_id", nullable = false)
     private String tokenId;
 
@@ -30,8 +31,11 @@ public class OAuthAccessToken {
     @Lob
     private Blob authentication;
 
-    @Column(name = "refresh_token", nullable = false)
-    private String refreshToken;
+//    @Column(name = "refresh_token", nullable = false)
+//    private String refreshToken;
+//
+    @OneToOne
+    private OAuthRefreshToken refreshToken;
 }
 
 

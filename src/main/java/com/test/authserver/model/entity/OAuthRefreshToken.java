@@ -17,6 +17,7 @@ public class OAuthRefreshToken {
     @Lob
     private Blob token;
 
+    //зачем это здесь нужно
     @Column(name="authentication")
     @Lob
     private Blob authentication;

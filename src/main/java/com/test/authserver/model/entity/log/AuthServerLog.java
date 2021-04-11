@@ -1,6 +1,5 @@
 package com.test.authserver.model.entity.log;
 
-import com.test.authserver.model.entity.AuthUser;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -15,11 +14,13 @@ public class AuthServerLog {
 
     public AuthServerLog() {}
 
-    private AuthServerLog(String name, Date date, Level level, String username) {
+    private AuthServerLog(String name, String descr, Date date, Level level, String username, String ipAddr) {
         this.name = name;
+        this.description = descr;
         this.date = date;
         this.level = level;
         this.username = username;
+        this.ipAddr = ipAddr;
     }
 
     public static AuthServerLog.AuthServerLogBuilder withLogName(LogName logName) {
@@ -44,19 +45,29 @@ public class AuthServerLog {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "ip_addr")
+    private String ipAddr;
+
     @Enumerated(EnumType.STRING)
     private Level level;
 
     public static class AuthServerLogBuilder {
         private LogName name;
+        private String descr;
         private Date date;
         private Level level;
         private String username;
+        private String ipAddr;
 
         private AuthServerLogBuilder() { }
 
         public AuthServerLogBuilder logName(LogName logName) {
             this.name = logName;
+            return this;
+        }
+
+        public AuthServerLogBuilder description(String descr) {
+            this.descr = descr;
             return this;
         }
 
@@ -80,8 +91,13 @@ public class AuthServerLog {
             return this;
         }
 
+        public AuthServerLogBuilder ipAddr(String ipAddr) {
+            this.ipAddr = ipAddr;
+            return this;
+        }
+
         public AuthServerLog build() {
-            return new AuthServerLog(name.getFull(), date, level, username);
+            return new AuthServerLog(name.getFull(), descr, date, level, username, ipAddr);
         }
     }
 }

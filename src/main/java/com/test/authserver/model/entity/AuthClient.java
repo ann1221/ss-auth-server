@@ -3,17 +3,18 @@ package com.test.authserver.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "aclient")
 @Data
-public class AuthClient {
+public class AuthClient implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "secret")
@@ -28,7 +29,7 @@ public class AuthClient {
             joinColumns = { @JoinColumn(name = "aclient_id") },
             inverseJoinColumns = { @JoinColumn(name = "grant_type_id") }
     )
-    Set<GrantType> grantTypes;
+    private Set<GrantType> grantTypes;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
     @JoinTable(
@@ -36,7 +37,7 @@ public class AuthClient {
             joinColumns = { @JoinColumn(name = "aclient_id") },
             inverseJoinColumns = { @JoinColumn(name = "resource_id") }
     )
-    Set<Resource> resources;
+    private Set<Resource> resources;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
     @JoinTable(
@@ -44,7 +45,7 @@ public class AuthClient {
             joinColumns = { @JoinColumn(name = "aclient_id") },
             inverseJoinColumns = { @JoinColumn(name = "scope_id") }
     )
-    Set<Scope> scopes;
+    private Set<Scope> scopes;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
     @JoinTable(
@@ -52,7 +53,7 @@ public class AuthClient {
             joinColumns = { @JoinColumn(name = "aclient_id") },
             inverseJoinColumns = { @JoinColumn(name = "redirect_id") }
     )
-    Set<RedirectUri> redirectUris;
+    private Set<RedirectUri> redirectUris;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
     @JoinTable(
@@ -60,5 +61,5 @@ public class AuthClient {
             joinColumns = { @JoinColumn(name = "aclient_id") },
             inverseJoinColumns = { @JoinColumn(name = "authority_id") }
     )
-    Set<Authority> authorities;
+    private Set<Authority> authorities;
 }

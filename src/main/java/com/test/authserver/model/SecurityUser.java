@@ -7,9 +7,7 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class SecurityUser implements UserDetails {
     @Getter
@@ -36,13 +34,13 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<Authority> userRolesAuthorities = authUser.getRoles().stream()
+        Set<Authority> userRolesAuthorities = authUser.getRoles().stream()
                 .map(Role::getAuthorities)
                 .reduce((authorities, authorities2) -> {
                     authorities.addAll(authorities2);
                     return authorities;
-                }).orElse(new ArrayList<>());
-        List<Authority> userAuthorities = authUser.getAuthorities();
+                }).orElse(new HashSet<>());
+        Set<Authority> userAuthorities = authUser.getAuthorities();
         userAuthorities.addAll(userRolesAuthorities);
         return userAuthorities;
     }
